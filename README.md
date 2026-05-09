@@ -1,7 +1,7 @@
 # The Torchbearer
 
-**Student Name:** ___________________________
-**Student ID:** ___________________________
+**Student Name:** Katelyn Nguyen
+**Student ID:** 130820258
 **Course:** CS 460 – Algorithms | Spring 2026
 
 > This README is your project documentation. Write it the way a developer would document
@@ -17,13 +17,13 @@
 > per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
-  _Your answer here._
+- A single shortest-path from S cannot make future optimal choices???
 
 - **What decision remains after all inter-location costs are known:**
-  _Your answer here._
+- The decision of building a path from node S to node T.
 
 - **Why this requires a search over orders (one sentence):**
-  _Your answer here._
+- A search over orders prevents blocking future optimal choices???
 
 ---
 
@@ -34,9 +34,9 @@
 > List the source node types as a bullet list. For each, one-line reason.
 
 | Source Node Type | Why it is a source |
-|---|---|
-| _node type_ | _one-line reason_ |
-| _node type_ | _one-line reason_ |
+| Spawn Node | This is the node the torchbearer has to start from |
+| Relic Node | One of the nodes the torchbearer must visit once |
+| Exit Node | The ending node the torchbearer has to end at | 
 
 ### Part 2b: Distance Storage
 
@@ -44,20 +44,20 @@
 
 | Property | Your answer |
 |---|---|
-| Data structure name | |
-| What the keys represent | |
-| What the values represent | |
-| Lookup time complexity | |
-| Why O(1) lookup is possible | |
+| Data structure name | Heap |
+| What the keys represent | Keys represent vertices |
+| What the values represent | Represent edge costs|
+| Lookup time complexity | O(V) where V is the number of vertices |
+| Why O(1) lookup is possible | If we have 1 vertice, we would have O(1) lookup time|
 
 ### Part 2c: Precomputation Complexity
 
 > State the total complexity and show the arithmetic. Two to three lines max.
 
-- **Number of Dijkstra runs:** _your answer_
-- **Cost per run:** _your answer_
-- **Total complexity:** _your answer_
-- **Justification (one line):** _your answer_
+- **Number of Dijkstra runs:** Let n = |V| vertices. Dijkstra runs n times.
+- **Cost per run:** Let n = |V|, m = |E|, k = |M|. O(N) insertions + O(log(N)) minimum cost look up + O(E) pops from priority queue.
+- **Total complexity:** O(E + Nlog(N))
+- **Justification (one line):** As Dijkstra's algorithm requires all three actions, we add the time complexities up to get O(E + Nlog(N))
 
 ---
 

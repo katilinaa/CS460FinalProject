@@ -2,8 +2,8 @@
 CS 460 – Algorithms: Final Programming Assignment
 The Torchbearer
 
-Student Name: ___________________________
-Student ID:   ___________________________
+Student Name: Katelyn Nguyen
+Student ID:   130820258
 
 INSTRUCTIONS
 ------------
@@ -34,8 +34,10 @@ def explain_problem():
 
     TODO
     """
-    return "TODO"
-
+    Q1 = "A single shortest-path from S cannot make future optimal choices"
+    Q2 = "The decision of building a path from node S to node T."
+    Q3 = "A search over orders prevents blocking future optimal choices."
+    return Q1 + Q2 + Q3
 
 # =============================================================================
 # PART 2
@@ -56,7 +58,9 @@ def select_sources(spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    # Selecting source nodes for precomputing distances.
+    nodesList = [spawn] + relics + [exit_node]
+    return list(set(nodesList))
 
 
 def run_dijkstra(graph, source):
@@ -75,7 +79,28 @@ def run_dijkstra(graph, source):
 
     TODO
     """
-    pass
+    # Setting the cost for each node to infinity
+    nodeCosts = {node: float('inf') for node in graph}
+
+    # Setting the source node cost to 0
+    nodeCosts[source] = 0
+
+    # Initializing priority queue with the source node and its cost
+    priorityQueue = [(0, source)]
+
+    while priorityQueue:
+        [currentCost, currentNode] = heapq.heappop(priorityQueue)
+        # If the current cost is greater than the previous cost to reach the current node, skip it
+        if currentCost > nodeCosts[currentNode]:
+            continue
+        for neighbor, edgeCost in graph[currentNode]:
+            # If the cost to reach the neighbor + the edge cost is less than the previous cost, we update the cost to reach the neighbor
+            if nodeCosts[currentNode] + edgeCost < nodeCosts[neighbor]:
+                nodeCosts[neighbor] = nodeCosts[currentNode] + edgeCost
+                heapq.heappush(priorityQueue, (nodeCosts[neighbor], neighbor))
+
+    # Returning the dictionary of minimum costs from the source to every node in the graph
+    return nodeCosts
 
 
 def precompute_distances(graph, spawn, relics, exit_node):
@@ -95,7 +120,17 @@ def precompute_distances(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
+    # Initializing source nodes to precompute distances
+    sourceNodes = select_sources(spawn, relics, exit_node)
+
+    # Distance table storing each node and the minimum cost to reach every other node from it
+    distTable = {}
+
+    for sourceNode in sourceNodes:
+        distTable[sourceNode] = run_dijkstra(graph, sourceNode)
+
+    return distTable
+
 
 
 # =============================================================================
@@ -219,6 +254,17 @@ def solve(graph, spawn, relics, exit_node):
 # PROVIDED TESTS (do not modify)
 # Graders will run additional tests beyond these.
 # =============================================================================
+def student_tests():
+    # Test 0:
+    graph_0 = {
+        'S': [('B', 1), ('C', 2), ('D', 2)],
+        'B': [('D', 1), ('T', 1)],
+        'C': [('B', 1), ('T', 1)],
+        'D': [('B', 1), ('C', 1)],
+        'T': []
+        }
+    print(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'))
+    print("\nAll provided tests passed.")
 
 def _run_tests():
     print("Running provided tests...")
@@ -280,4 +326,6 @@ def _run_tests():
 
 
 if __name__ == "__main__":
-    _run_tests()
+    # _run_tests()
+    student_tests()
+    explain_problem()
