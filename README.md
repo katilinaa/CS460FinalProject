@@ -94,7 +94,7 @@
 
 > One sentence connecting correct distances to correct routing decisions.
 
-By calculating the correct shortest distances from the current node to other nodes, we correctly calculate fuel costs and the exit location. This allows the torchbearer to correctly make decisions on where to go based on fuel efficiency.
+By calculating the correct shortest distances from the current node to other nodes, we correctly calculate fuel costs, allowing the torchbearer to make accurate decisions on where to go based on fuel efficiency.
 
 ---
 
