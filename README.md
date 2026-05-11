@@ -34,9 +34,10 @@
 > List the source node types as a bullet list. For each, one-line reason.
 
 | Source Node Type | Why it is a source |
+|---|---|
 | Spawn Node | This is the node the torchbearer has to start from |
 | Relic Node | One of the nodes the torchbearer must visit once |
-| Exit Node | The ending node the torchbearer has to end at | 
+| Exit Node | The ending node the torchbearer has to end at|
 
 ### Part 2b: Distance Storage
 
