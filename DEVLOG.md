@@ -19,13 +19,12 @@ Today, I'll implement parts 1, 2a, 2b, and 2c. I expect distance storage and pre
 
 ---
 
-## Entry 2 – [Date]: [Short description]
+## Entry 2 – [5/10/2026]: Verifying Correctness of Shortest Path
 
 > Required. At least one entry must describe a bug, wrong assumption, or design change
 > you encountered. Describe what went wrong and how you resolved it.
 
-_Your entry here._
-
+Today, I'll be focusing on implementing part 3 of the assignment. For part 3A, I got a bit stumped on the wording for explaining the invariant for the non finalized nodes. I decided that the invariant requires that previous nodes leading up to the current node have been discovered; but I didn't mention anything about minimum cost. I changed my answer to include both but my answer may be too long now so I may change it again in the future.
 ---
 
 ## Entry 3 – [Date]: [Short description]

@@ -145,9 +145,10 @@ def dijkstra_invariant_check():
         Your Part 3 README answers, written as a string.
         Must match what you wrote in README Part 3.
 
-    TODO
     """
-    return "TODO"
+    Q3A1 = "It must hold true that the minimum cost has been found from the current node to all other nodes in S."
+    Q3A2 = "It must hold true that for each node not in S, the node with the lowest cost from the current node is discovered. Thus, all nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded."
+    return Q3A1 + Q3A2
 
 
 # =============================================================================

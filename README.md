@@ -72,29 +72,29 @@
 > Do not copy the invariant text from the spec.
 
 - **For nodes already finalized (in S):**
-  _Your answer here._
+  It must hold true that the minimum cost has been found from the current node to all other nodes in S.
 
 - **For nodes not yet finalized (not in S):**
-  _Your answer here._
+  It must hold true that for each node not in S, the node with the lowest cost from the current node is discovered. Thus, all nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded.
 
 ### Part 3b: Why Each Phase Holds
 
 > One to two bullets per phase. Maintenance must mention nonnegative edge weights.
 
 - **Initialization : why the invariant holds before iteration 1:**
-  _Your answer here._
+  Since we are starting with the current node, the cost to reach the current node is 0 which is the minimum cost for all nodes discovered given we've only discovered one node.
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
-  _Your answer here._
+  Given that we only have nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost may result in that cost not being minimal anymore. Thus, finalizing the min-dist node always records the minimum cost.
 
 - **Termination : what the invariant guarantees when the algorithm ends:**
-  _Your answer here._
+  The invariant guarantees that we've recorded the minimum costs to reach every other node from the current node, correctly solving the problem for the shortest-path.
 
 ### Part 3c: Why This Matters for the Route Planner
 
 > One sentence connecting correct distances to correct routing decisions.
 
-_Your answer here._
+By calculating the correct shortest distances from the current node to other nodes, we correctly calculate fuel costs and the exit location. This allows the torchbearer to correctly make decisions on where to go based on fuel efficiency.
 
 ---
 
