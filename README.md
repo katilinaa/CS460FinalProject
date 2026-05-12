@@ -106,17 +106,22 @@ By calculating the correct shortest distances from the current node to other nod
 > State the failure mode. Then give a concrete counter-example using specific node names
 > or costs (you may use the illustration example from the spec). Three to five bullets.
 
-- **The failure mode:** _Your answer here._
-- **Counter-example setup:** _Your answer here._
-- **What greedy picks:** _Your answer here._
-- **What optimal picks:** _Your answer here._
-- **Why greedy loses:** _Your answer here._
+- **The failure mode:** Greedy will pick the path with the overall highest fuel cost when picking the current shortest path from the current node.
+- **Counter-example setup:**
+    'S': [('B', 1), ('C', 2), ('D', 2)]
+    'B': [('D', 1), ('T', 1)]
+    'C': [('B', 1), ('T', 2)]
+    'D': [('B', 1), ('C', 1)]
+    'T': []
+- **What greedy picks:** Greedy will pick (S, B) + (B, D) + (D, C) + (C, B) + (B, T) with a total cost of 6.
+- **What optimal picks:** Optimal will pick (S, B) + (B, D) + (D, C) + (C, T) with total cost of 5.
+- **Why greedy loses:** Greedy loses because it greedily chooses the shortest path from the current node without considering future choices.
 
 ### What the Algorithm Must Explore
 
 > One bullet. Must use the word "order."
 
-- _Your answer here._
+- The algorithm must explore the order in which the shortest path from the starting node to the ending node while reaching all relic nodes at least once exists.
 
 ---
 

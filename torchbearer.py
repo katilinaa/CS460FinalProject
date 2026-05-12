@@ -148,7 +148,11 @@ def dijkstra_invariant_check():
     """
     Q3A1 = "It must hold true that the minimum cost has been found from the current node to all other nodes in S."
     Q3A2 = "It must hold true that for each node not in S, the node with the lowest cost from the current node is discovered. Thus, all nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded."
-    return Q3A1 + Q3A2
+    Q3B1 = "Since we are starting with the current node, the cost to reach the current node is 0 which is the minimum cost for all nodes discovered given we've only discovered one node."
+    Q3B2 = "Given that we only have nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost may result in that cost not being minimal anymore. Thus, finalizing the min-dist node always records the minimum cost."
+    Q3B3 = "The invariant guarantees that we've recorded the minimum costs to reach every other node from the current node, correctly solving the problem for the shortest-path."
+    Q3C = "By calculating the correct shortest distances from the current node to other nodes, we correctly calculate fuel costs, allowing the torchbearer to make accurate decisions on where to go based on fuel efficiency."
+    return Q3A1 + Q3A2 + Q3B1 + Q3B2 + Q3B3 + Q3C
 
 
 # =============================================================================
@@ -163,9 +167,19 @@ def explain_search():
         Your Part 4 README answers, written as a string.
         Must match what you wrote in README Part 4.
 
-    TODO
     """
-    return "TODO"
+    failureMode = "Greedy will pick the path with the overall highest fuel cost when picking the current shortest path from the current node."
+    counterExample = ""
+    "'S': [('B', 1), ('C', 2), ('D', 2)] " \
+    "'B': [('D', 1), ('T', 1)]" \
+    "'C': [('B', 1), ('T', 2)]" \
+    "'D': [('B', 1), ('C', 1)] " \
+    "'T': [] "
+    greedyPick = "Greedy will pick (S, B) + (B, D) + (D, C) + (C, B) + (B, T) with a total cost of 6." 
+    optimalPick = "Optimal will pick (S, B) + (B, D) + (D, C) + (C, T) with total cost of 5." 
+    greedyLoss = "Greedy loses because it greedily chooses the shortest path from the current node without considering future choices."
+    algoExplore = "The algorithm must explore the order in which the shortest path from the starting node to the ending node while reaching all relic nodes at least once exists."
+    return failureMode + counterExample + greedyPick + optimalPick + greedyLoss + algoExplore
 
 
 # =============================================================================
