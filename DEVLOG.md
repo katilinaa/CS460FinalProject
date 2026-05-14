@@ -33,7 +33,7 @@ Today, I'll be focusing on implementing part 4 of the assignment. My biggest hur
 
 ---
 
-## Entry 4 – [Date]: Post-Implementation Reflection
+## Entry 4 – [5/13/2026]: Post-Implementation Reflection
 
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.

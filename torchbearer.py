@@ -204,10 +204,16 @@ def find_optimal_route(dist_table, spawn, relics, exit_node):
         (minimum_fuel_cost, ordered_relic_list)
         Returns (float('inf'), []) if no valid route exists.
 
-    TODO
     """
-    pass
+    fuelCost = 0
+    currentLoc = spawn
+    relicsUncollected = list(relics)
+    relicsCollected = []
+    # A list holding the minimum cost for the torchbearer to reach the exit and the path to get there
+    bestCost = [float('inf'), []]
+    _explore(dist_table, currentLoc, relicsUncollected, relicsCollected, fuelCost, exit_node, bestCost)
 
+    return (bestCost[0], bestCost[1])
 
 def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
              cost_so_far, exit_node, best):
@@ -231,15 +237,44 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     None
         Updates best in place.
 
-    TODO
     Implement: base case, pruning, recursive case, backtracking.
 
     REQUIRED: Add a 1-2 sentence comment near your pruning condition
     explaining why it is safe (cannot skip the optimal solution).
     This comment is graded.
     """
-    pass
+    # Base Case:
+    if len(relics_remaining) == 0:
+        totalCost = cost_so_far + dist_table[current_loc][exit_node]
+        if totalCost < best[0]:
+            best[0] = totalCost
+            best[1] = relics_visited_order.copy()
+        return
+    
+    # Picking the cheapest cost to reach relic from the current location
+    cheapestRelicCost = min(dist_table[current_loc][relic] for relic in relics_remaining)
 
+    # Picking the cheapest cost to reach the exit node from all remaining relics
+    cheapestExitCost = min(dist_table[relic][exit_node] for relic in relics_remaining)
+    optimalCost = cheapestRelicCost + cheapestExitCost
+
+    # As we've calculated the cheapest cost to reach the exit node for all remaining relics, if we add the cost so far to this optimal cheapest cost and it's still larger than our current best, we can prune this path.
+    # This is because the optimal cost for this current path has taken into account all future possibilites, so there's no way for the optimal cost for this current path to be less due to nonnegative edge weights.
+    if cost_so_far + optimalCost >= best[0]:
+        return
+    
+    # Recursive Case:
+    for relic in list(relics_remaining):
+        currentFuelCost = cost_so_far + dist_table[current_loc][relic]
+
+        relics_remaining.remove(relic)
+        relics_visited_order.append(relic)
+
+        _explore(dist_table, relic, relics_remaining, relics_visited_order, currentFuelCost, exit_node, best)
+
+        # Backtracking:
+        relics_visited_order.pop()
+        relics_remaining.append(relic)
 
 # =============================================================================
 # PIPELINE
@@ -273,12 +308,14 @@ def student_tests():
     # Test 0:
     graph_0 = {
         'S': [('B', 1), ('C', 2), ('D', 2)],
-        'B': [('D', 1), ('T', 1)],
-        'C': [('B', 1), ('T', 1)],
+        'B': [('D', 1), ('T', 2)],
+        'C': [('B', 1), ('T', 2)],
         'D': [('B', 1), ('C', 1)],
         'T': []
         }
-    print(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'))
+    # print(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'))
+    # optimal cost should be 5, but may give 6
+    print(find_optimal_route(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'), 'S', ['B', 'C', 'D'], 'T'))
     print("\nAll provided tests passed.")
 
 def _run_tests():

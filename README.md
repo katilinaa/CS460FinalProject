@@ -134,9 +134,9 @@ By calculating the correct shortest distances from the current node to other nod
 
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | | | |
-| Relics already collected | | | |
-| Fuel cost so far | | | |
+| Current location | currentLoc | node | The current location of the torchbearer |
+| Relics already collected | relicsCollected | List[node] | A list representing the relics we've already collected |
+| Fuel cost so far | fuelCost | float | A float value representing the amount of fuel the torchbearer has used to traverse |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -144,18 +144,18 @@ By calculating the correct shortest distances from the current node to other nod
 
 | Property | Your answer |
 |---|---|
-| Data structure chosen | |
-| Operation: check if relic already collected | Time complexity: |
-| Operation: mark a relic as collected | Time complexity: |
-| Operation: unmark a relic (backtrack) | Time complexity: |
-| Why this structure fits | |
+| Data structure chosen | List |
+| Operation: check if relic already collected | Time complexity: O(N)|
+| Operation: mark a relic as collected | Time complexity: O(N)|
+| Operation: unmark a relic (backtrack) | Time complexity: O(N)|
+| Why this structure fits | This fits because we can easily add and remove relics if needed for backtracking |
 
 ### Part 5c: Worst-Case Search Space
 
 > Two bullets.
 
-- **Worst-case number of orders considered:** _Your answer (in terms of k)._
-- **Why:** _One-line justification._
+- **Worst-case number of orders considered:** Worst case, we would consider O(k^3) orders
+- **Why:** Since all of the operations we are performing when searching for the best path take O(k) time, this equates to O(k^3) time.
 
 ---
 
@@ -165,23 +165,23 @@ By calculating the correct shortest distances from the current node to other nod
 
 > Three bullets.
 
-- **What is tracked:** _Your answer here._
-- **When it is used:** _Your answer here._
-- **What it allows the algorithm to skip:** _Your answer here._
+- **What is tracked:** Tracking the cheapest fuel cost to reach a relic from the current relic and the cheapest fuel cost to reach the exit from all remaining relics.
+- **When it is used:** ...
+- **What it allows the algorithm to skip:** Skips paths that would incur higher fuel costs
 
 ### Part 6b: Lower Bound Estimation
 
 > Three bullets.
 
-- **What information is available at the current state:** _Your answer here._
-- **What the lower bound accounts for:** _Your answer here._
-- **Why it never overestimates:** _Your answer here._
+- **What information is available at the current state:** The current location, the relics collected, and the amount of fuel used.
+- **What the lower bound accounts for:** Accounts for the current fuel used plus the optimal fuel used for all potential paths from the current location.
+- **Why it never overestimates:** ...
 
 ### Part 6c: Pruning Correctness
 
 > One to two bullets. Explain why pruning is safe.
 
-- _Your answer here._
+- Pruning is safe because we are eliminating paths that have already been fully predicted that would incur higher fuel costs compared to the current minimum fuel cost to reach the exit.
 
 ---
 
@@ -189,4 +189,6 @@ By calculating the correct shortest distances from the current node to other nod
 
 > Bullet list. If none beyond lecture notes, write that.
 
-- _Your references here._
+- Lecture notes
+- Python Wiki https://wiki.python.org/moin/TimeComplexity
+- Pruning Techniques https://fastercapital.com/content/Pruning-Techniques--Cutting-Corners--Pruning-Techniques-in-Branch-and-Bound.html#Introduction-to-Branch-and-Bound
