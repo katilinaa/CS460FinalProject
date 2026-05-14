@@ -38,7 +38,7 @@ Today, I'll be focusing on implementing part 4 of the assignment. My biggest hur
 > Required. Written after your implementation is complete. Describe what you would
 > change or improve given more time.
 
-_Your entry here._
+I've implemented the find_optimal_route along with the _explore recursive helper function today. One thing that I'd like to improve would be to find a better way of pruning unnecessary paths given I had more time to brainstorm. I'd also try and see what other data strucures I could use for holding the remaining relics to be collected.
 
 ---
 
@@ -48,12 +48,12 @@ _Your entry here._
 
 | Part | Estimated Hours |
 |---|---|
-| Part 1: Problem Analysis | |
-| Part 2: Precomputation Design | |
-| Part 3: Algorithm Correctness | |
-| Part 4: Search Design | |
-| Part 5: State and Search Space | |
-| Part 6: Pruning | |
+| Part 1: Problem Analysis | 15 minutes |
+| Part 2: Precomputation Design | 30 minutes |
+| Part 3: Algorithm Correctness | 30 minutes |
+| Part 4: Search Design | 30 minutes |
+| Part 5: State and Search Space | 2 hours |
+| Part 6: Pruning | 4 hours |
 | Part 7: Implementation | |
-| README and DEVLOG writing | |
+| README and DEVLOG writing | 2 hours |
 | **Total** | |

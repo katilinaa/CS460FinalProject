@@ -17,13 +17,13 @@
 > per question. Each bullet should be 1-2 sentences max.
 
 - **Why a single shortest-path run from S is not enough:**
-- A single shortest-path from S cannot make future optimal choices???
+- A single shortest-path from S does not take into account all future possibilites, so an overall optimal choice is not guaranteed.
 
 - **What decision remains after all inter-location costs are known:**
-- The decision of building a path from node S to node T.
+- The decision of building a path from starting node S to exit node T.
 
 - **Why this requires a search over orders (one sentence):**
-- A search over orders prevents blocking future optimal choices???
+- A search over orders takes into account all future possibilites, preventing the blocking of future optimal choices.
 
 ---
 
@@ -35,6 +35,7 @@
 
 | Source Node Type | Why it is a source |
 |---|---|
+
 | Spawn Node | This is the node the torchbearer has to start from |
 | Relic Node | One of the nodes the torchbearer must visit once |
 | Exit Node | The ending node the torchbearer has to end at|
@@ -134,9 +135,9 @@ By calculating the correct shortest distances from the current node to other nod
 
 | Component | Variable name in code | Data type | Description |
 |---|---|---|---|
-| Current location | currentLoc | node | The current location of the torchbearer |
+| Current location | currentLoc | node | The current location of the Torchbearer |
 | Relics already collected | relicsCollected | List[node] | A list representing the relics we've already collected |
-| Fuel cost so far | fuelCost | float | A float value representing the amount of fuel the torchbearer has used to traverse |
+| Fuel cost so far | fuelCost | float | A float value representing the amount of fuel the Torchbearer has used to traverse |
 
 ### Part 5b: Data Structure for Visited Relics
 
@@ -166,7 +167,7 @@ By calculating the correct shortest distances from the current node to other nod
 > Three bullets.
 
 - **What is tracked:** Tracking the cheapest fuel cost to reach a relic from the current relic and the cheapest fuel cost to reach the exit from all remaining relics.
-- **When it is used:** ...
+- **When it is used:** Used to calculate the potential fuel cost for the path from the next cheapest relic to the exit
 - **What it allows the algorithm to skip:** Skips paths that would incur higher fuel costs
 
 ### Part 6b: Lower Bound Estimation
@@ -175,13 +176,13 @@ By calculating the correct shortest distances from the current node to other nod
 
 - **What information is available at the current state:** The current location, the relics collected, and the amount of fuel used.
 - **What the lower bound accounts for:** Accounts for the current fuel used plus the optimal fuel used for all potential paths from the current location.
-- **Why it never overestimates:** ...
+- **Why it never overestimates:** Since assuming most optimal fuel cost for all potential paths, if the actual cost is more, the path can be safely eliminated since the lowest amount it could have been still wouldn't beat the current best fuel cost. 
 
 ### Part 6c: Pruning Correctness
 
 > One to two bullets. Explain why pruning is safe.
 
-- Pruning is safe because we are eliminating paths that have already been fully predicted that would incur higher fuel costs compared to the current minimum fuel cost to reach the exit.
+- Pruning is safe because the Torchbearer is still forced to visit a remaining relic and follow a valid path to the exit. Since the cheapest costing relic is visited and the cheapest costing path from that relic to the exit is assumed, the actual cost can never be lower than that.
 
 ---
 
