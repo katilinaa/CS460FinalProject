@@ -41,5 +41,5 @@ I've implemented the find_optimal_route along with the _explore recursive helper
 | Part 5: State and Search Space | 2 hours |
 | Part 6: Pruning | 4 hours |
 | Part 7: Implementation | 4 hours |
-| README and DEVLOG writing | 4 hours |
-| **Total** | 15.75 hours |
+| README and DEVLOG writing | 4.5 hours |
+| **Total** | 16.25 hours |
