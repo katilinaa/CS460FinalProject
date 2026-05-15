@@ -32,11 +32,10 @@ def explain_problem():
         Your Part 1 README answers, written as a string.
         Must match what you wrote in README Part 1.
 
-    TODO
     """
-    Q1 = "A single shortest-path from S cannot make future optimal choices"
-    Q2 = "The decision of building a path from node S to node T."
-    Q3 = "A search over orders prevents blocking future optimal choices."
+    Q1 = "A single shortest-path run from S cannot make globally optimal decisions based on previous results."
+    Q2 = "The decision of building a path from starting node S to exit node T."
+    Q3 = "This requires a search over orders because the best path needs to consider all possibilities which cannot be done through a single computation."
     return Q1 + Q2 + Q3
 
 # =============================================================================
@@ -56,7 +55,6 @@ def select_sources(spawn, relics, exit_node):
     list[node]
         No duplicates. Order does not matter.
 
-    TODO
     """
     # Selecting source nodes for precomputing distances.
     nodesList = [spawn] + relics + [exit_node]
@@ -77,7 +75,6 @@ def run_dijkstra(graph, source):
         Minimum cost from source to every node in graph.
         Unreachable nodes map to float('inf').
 
-    TODO
     """
     # Setting the cost for each node to infinity
     nodeCosts = {node: float('inf') for node in graph}
@@ -118,7 +115,6 @@ def precompute_distances(graph, spawn, relics, exit_node):
         Nested structure supporting dist_table[u][v] lookups
         for every source u your design requires.
 
-    TODO
     """
     # Initializing source nodes to precompute distances
     sourceNodes = select_sources(spawn, relics, exit_node)
@@ -130,8 +126,6 @@ def precompute_distances(graph, spawn, relics, exit_node):
         distTable[sourceNode] = run_dijkstra(graph, sourceNode)
 
     return distTable
-
-
 
 # =============================================================================
 # PART 3
@@ -147,12 +141,12 @@ def dijkstra_invariant_check():
 
     """
     Q3A1 = "It must hold true that the minimum cost has been found from the current node to all other nodes in S."
-    Q3A2 = "It must hold true that for each node not in S, the node with the lowest cost from the current node is discovered. Thus, all nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded."
-    Q3B1 = "Since we are starting with the current node, the cost to reach the current node is 0 which is the minimum cost for all nodes discovered given we've only discovered one node."
-    Q3B2 = "Given that we only have nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost may result in that cost not being minimal anymore. Thus, finalizing the min-dist node always records the minimum cost."
-    Q3B3 = "The invariant guarantees that we've recorded the minimum costs to reach every other node from the current node, correctly solving the problem for the shortest-path."
-    Q3C = "By calculating the correct shortest distances from the current node to other nodes, we correctly calculate fuel costs, allowing the torchbearer to make accurate decisions on where to go based on fuel efficiency."
-    return Q3A1 + Q3A2 + Q3B1 + Q3B2 + Q3B3 + Q3C
+    Q3A2 = "It must hold true that for each node not in S, the distance leading up to that node is the lowest found path since all finalized nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded."
+    Q3init = "Before iteration 1, only one node has been discovered with a cost of 0. Discovering the current node means all nodes have been discovered and therefore the minimum cost for all nodes has been computed as well since cost can never be negative."
+    Q3main = "Given there can only be nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost would result in a cost greater than that minimum cost. Thus, finalizing the min-dist node always records the minimum cost."
+    Q3term = "The invariant guarantees that the minimum cost to reach every other node from the current node has been recorded. Therefore, an optimal path will be discovered from the starting node to the exit node."
+    Q3C = "By calculating the correct shortest-path distances from the current node to other nodes, we correctly calculate fuel costs, allowing the torchbearer to make accurate decisions on where to go based on fuel efficiency."
+    return Q3A1 + Q3A2 + Q3init + Q3main + Q3term + Q3C
 
 
 # =============================================================================
@@ -168,10 +162,10 @@ def explain_search():
         Must match what you wrote in README Part 4.
 
     """
-    failureMode = "Greedy will pick the path with the overall highest fuel cost when picking the current shortest path from the current node."
+    failureMode = "Greedy will pick the path with a locally lower fuel cost, not considering if that choice contributes to the globally optimal fuel cost, ultimately failing."
     counterExample = ""
     "'S': [('B', 1), ('C', 2), ('D', 2)] " \
-    "'B': [('D', 1), ('T', 1)]" \
+    "'B': [('D', 1), ('T', 2)]" \
     "'C': [('B', 1), ('T', 2)]" \
     "'D': [('B', 1), ('C', 1)] " \
     "'T': [] "
@@ -258,7 +252,7 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     cheapestExitCost = min(dist_table[relic][exit_node] for relic in relics_remaining)
     optimalCost = cheapestRelicCost + cheapestExitCost
 
-    # As we've calculated the cheapest cost to reach the exit node for all remaining relics, if we add the cost so far to this optimal cheapest cost and it's still larger than our current best, we can prune this path.
+    # As we've calculated the potential cheapest cost to reach the exit node for all remaining relics, if we add the cost so far to this potential cheapest cost and it's still larger than our current best, we can prune this path.
     # This is because the optimal cost for this current path has taken into account all future possibilites, so there's no way for the optimal cost for this current path to be less due to nonnegative edge weights.
     if cost_so_far + optimalCost >= best[0]:
         return
@@ -297,26 +291,13 @@ def solve(graph, spawn, relics, exit_node):
 
     TODO
     """
-    pass
-
+    distTable = precompute_distances(graph, spawn, relics, exit_node)
+    return find_optimal_route(distTable, spawn, relics, exit_node)
 
 # =============================================================================
 # PROVIDED TESTS (do not modify)
 # Graders will run additional tests beyond these.
 # =============================================================================
-def student_tests():
-    # Test 0:
-    graph_0 = {
-        'S': [('B', 1), ('C', 2), ('D', 2)],
-        'B': [('D', 1), ('T', 2)],
-        'C': [('B', 1), ('T', 2)],
-        'D': [('B', 1), ('C', 1)],
-        'T': []
-        }
-    # print(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'))
-    # optimal cost should be 5, but may give 6
-    print(find_optimal_route(precompute_distances(graph_0, 'S', ['B', 'C', 'D'], 'T'), 'S', ['B', 'C', 'D'], 'T'))
-    print("\nAll provided tests passed.")
 
 def _run_tests():
     print("Running provided tests...")
@@ -378,6 +359,5 @@ def _run_tests():
 
 
 if __name__ == "__main__":
-    # _run_tests()
-    student_tests()
+    _run_tests()
     explain_problem()
