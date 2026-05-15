@@ -42,7 +42,7 @@
 ### Part 2c: Precomputation Complexity
 
 - **Number of Dijkstra runs:** Let n = |V| vertices. Dijkstra runs n times.
-- **Cost per run:** Let n = |V|, m = |E|, k = |M|. O(n) insertions + O(log(n + k)) minimum cost look up + O(m) pops from priority queue to equal O(m + nlog(n + k)).
+- **Cost per run:** Let n = |V|, m = |E|. O(n) insertions + O(log(n)) minimum cost look up + O(m) pops from priority queue to equal O(m + nlog(n + k)).
 - **Total complexity:** O(n(m + nlog(n + k)))
 - **Justification (one line):** As Dijkstra runs n times and each run costs O(m + nlog(n + k)) time, multiplying the costs together gives the overall complexity of O(n(m + nlog(n + k))).
 
@@ -129,7 +129,7 @@ By calculating the correct shortest-path distances from the current node to othe
 
 ### Part 6a: Best-So-Far Tracking
 
-- **What is tracked:** Tracking the cheapest fuel cost to reach a relic from the current relic and the cheapest fuel cost to reach the exit from all remaining relics.
+- **What is tracked:** Tracking the cheapest fuel cost to reach a relic from the current location and the cheapest fuel cost to reach the exit from all remaining relics.
 - **When it is used:** Used to calculate the potential fuel cost for the path from the next cheapest relic to the exit.
 - **What it allows the algorithm to skip:** Skips paths that would incur higher fuel costs.
 
