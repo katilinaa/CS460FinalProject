@@ -251,7 +251,7 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
         # Update best cost if total cost is less than current best
         if totalCost < best[0]:
             best[0] = totalCost
-            best[1] = relics_visited_order.copy()
+            best[1] = relics_remaining.copy()
         return
 
     # Picking the cheapest cost to reach any relic from the current location
@@ -270,17 +270,17 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     # Recursive Case:
     for relic in list(relics_remaining):
 
-        # Calculating the current fuel to cost to reach the next relic from the current location
+        # Calculating the current fuel cost to reach the next relic from the current location
         currentFuelCost = cost_so_far + dist_table[current_loc][relic]
 
         relics_remaining.remove(relic)
         relics_visited_order.append(relic)
 
         # Recursively explore starting with the reached relic as the new current location along with the currently calculated fuel cost
-        _explore(dist_table, relic, relics_remaining, relics_visited_order, currentFuelCost, exit_node, best)
+        _explore(dist_table, relic, relics_remaining, relics_remaining, currentFuelCost, exit_node, best)
 
         # Backtracking:
-        relics_visited_order.pop()
+        relics_remaining.pop()
         relics_remaining.append(relic)
 
 # =============================================================================
@@ -304,7 +304,7 @@ def solve(graph, spawn, relics, exit_node):
     """
     # Computing the minimum distances from each node to every other node in the graph
     distTable = precompute_distances(graph, spawn, relics, exit_node)
-    
+
     # Finding the best valid route with optimal fuel costs using these minimum distances
     return find_optimal_route(distTable, spawn, relics, exit_node)
 

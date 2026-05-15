@@ -121,7 +121,7 @@ By calculating the correct shortest-path distances from the current node to othe
 ### Part 5c: Worst-Case Search Space
 
 - **Worst-case number of orders considered:** Worst case, we would consider O(k!) orders
-- **Why:** There's a case in which all possible paths from the start to exit with k nodes must be explored to find the optimal solution, resulting in k! orders.
+- **Why:** There's a case in which all possible paths from the start to exit with k nodes must be explored to find the optimal solution, resulting in k! orders having to be explored.
 
 ---
 
@@ -137,16 +137,16 @@ By calculating the correct shortest-path distances from the current node to othe
 
 - **What information is available at the current state:** The current location, the relics collected, and the amount of fuel used.
 - **What the lower bound accounts for:** Accounts for the current fuel used plus the optimal fuel used for all potential paths from the current location.
-- **Why it never overestimates:** Since assuming most optimal fuel cost for all potential paths, if the actual cost is more, the path can be safely eliminated since the lowest amount it could have been still wouldn't beat the current best fuel cost. 
+- **Why it never overestimates:** Since it's assuming the most optimal fuel cost for all potential paths, the actual cost is greater than or equal to this potential cost. 
 
 ### Part 6c: Pruning Correctness
 
-- Pruning is safe because the Torchbearer is still forced to visit a remaining relic and follow a valid path to the exit. Since the cheapest costing relic is visited and the cheapest costing path from that relic to the exit is assumed, the actual cost can never be lower than that.
+- If a branch's assumed lowest cost plus the current actual cost is greater than the current best cost, it can be safely pruned since the actual cost of this branch is at least greater than or equal to this assumed cost. Thus, an optimal solution that beats the current best cost is never discarded.
 
 ---
 
 ## References
 
 - Lecture notes
-- Python Wiki https://wiki.python.org/moin/TimeComplexity: used for finding the time complexity for list operations. Verified correctness by iterating for each list operation by hand.
+- Python Wiki https://wiki.python.org/moin/TimeComplexity: used for finding the time complexity for list operations. Verified correctness by iterating for each list operation needed to use by hand.
 - Pruning Techniques https://fastercapital.com/content/Pruning-Techniques--Cutting-Corners--Pruning-Techniques-in-Branch-and-Bound.html#Introduction-to-Branch-and-Bound: used for brainstorming ways to prune unwanted paths and for verifying pruning correctness. Verified the result by debugging the code step by step to ensure pruning correctness.
