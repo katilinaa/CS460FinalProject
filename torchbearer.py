@@ -280,7 +280,7 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
         _explore(dist_table, relic, relics_remaining, relics_remaining, currentFuelCost, exit_node, best)
 
         # Backtracking:
-        relics_remaining.pop()
+        relics_visited_order.pop()
         relics_remaining.append(relic)
 
 # =============================================================================
