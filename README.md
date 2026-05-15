@@ -12,7 +12,7 @@
 - A single shortest-path run from S cannot make globally optimal decisions based on previous results.
 
 - **What decision remains after all inter-location costs are known:**
-- The decision of building a path from starting node S to exit node T.
+- The decision of building the minimum costing path from starting node S to exit node T.
 
 - **Why this requires a search over orders (one sentence):**
 - This requires a search over orders because the best path needs to consider all possibilities which cannot be done through a single computation.
@@ -42,9 +42,9 @@
 ### Part 2c: Precomputation Complexity
 
 - **Number of Dijkstra runs:** Let n = |V| vertices. Dijkstra runs n times.
-- **Cost per run:** Let n = |V|, m = |E|. O(n) insertions + O(log(n)) minimum cost look up + O(m) pops from priority queue to equal O(m + nlog(n + k)).
-- **Total complexity:** O(n(m + nlog(n + k)))
-- **Justification (one line):** As Dijkstra runs n times and each run costs O(m + nlog(n + k)) time, multiplying the costs together gives the overall complexity of O(n(m + nlog(n + k))).
+- **Cost per run:** Let n = |V|, m = |E|. O(n) insertions + O(log(n)) minimum cost look up + O(m) pops from priority queue to equal O(m + nlog(n)).
+- **Total complexity:** O(n(m + nlog(n)))
+- **Justification (one line):** As Dijkstra runs n times and each run costs O(m + nlog(n)) time, multiplying the costs together gives the overall complexity of O(n(m + nlog(n))).
 
 ---
 
@@ -56,7 +56,7 @@
   It must hold true that the minimum cost has been found from the current node to all other nodes in S.
 
 - **For nodes not yet finalized (not in S):**
-  It must hold true that for each node not in S, the distance leading up to that node is the lowest found path since all finalized nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded.
+  It must hold true that for each node not in S, the cost leading up to that node is the lowest found cost since all finalized nodes leading up to the undiscovered node must have the minimum cost from the current node already recorded.
 
 ### Part 3b: Why Each Phase Holds
 
@@ -65,11 +65,11 @@
   Discovering the current node means all nodes have been discovered and therefore the minimum cost for all nodes has been computed as well since cost can never be negative. 
 
 - **Maintenance : why finalizing the min-dist node is always correct:**
-  Given there can only be nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost would result in a cost greater than that minimum cost. Thus, finalizing the min-dist node always records the minimum cost.
+  Given there can only be nonnegative edge weights, it can be assumed that adding to an already recorded minimum cost would result in a cost greater than or equal to that minimum cost. Thus, finalizing the min-dist node always records the minimum cost.
 
 - **Termination : what the invariant guarantees when the algorithm ends:**
   The invariant guarantees that the minimum cost to reach every other node from the current node has been recorded.
-  Therefore, an optimal path will be discovered from the starting node to the exit node.
+  Therefore, an optimal path with the minimum possible cost to traverse will be discovered from the starting node to the exit node.
 
 ### Part 3c: Why This Matters for the Route Planner
 
@@ -90,7 +90,7 @@ By calculating the correct shortest-path distances from the current node to othe
     'T': []
 - **What greedy picks:** Greedy will pick (S, B) + (B, D) + (D, C) + (C, B) + (B, T) with a total cost of 6.
 - **What optimal picks:** Optimal will pick (S, B) + (B, D) + (D, C) + (C, T) with total cost of 5.
-- **Why greedy loses:** Greedy loses because it chose the local best path (C, B) without considering that it would cost more to reach the end for path (B, T).
+- **Why greedy loses:** Greedy loses because it chose the local best path (C, B) without considering that it would cost more to reach the end when traversing path (B, T).
 
 ### What the Algorithm Must Explore
 
@@ -121,7 +121,7 @@ By calculating the correct shortest-path distances from the current node to othe
 ### Part 5c: Worst-Case Search Space
 
 - **Worst-case number of orders considered:** Worst case, we would consider O(k!) orders
-- **Why:** There's a case in which all possible paths from the start to exit with k nodes must be explored to find the optimal solution, resulting in k! orders having to be explored.
+- **Why:** There's a case in which all possible paths from the start to exit with k orders must be explored to find the optimal solution, resulting in k! orders having to be explored.
 
 ---
 
@@ -129,15 +129,15 @@ By calculating the correct shortest-path distances from the current node to othe
 
 ### Part 6a: Best-So-Far Tracking
 
-- **What is tracked:** Tracking the cheapest fuel cost to reach a relic from the current location and the cheapest fuel cost to reach the exit from all remaining relics.
+- **What is tracked:** Tracking the cheapest fuel cost to reach any relic from the current location and the cheapest fuel cost to reach the exit from any remaining relics.
 - **When it is used:** Used to calculate the potential fuel cost for the path from the next cheapest relic to the exit.
-- **What it allows the algorithm to skip:** Skips paths that would incur higher fuel costs.
+- **What it allows the algorithm to skip:** Skips paths that would incur higher fuel costs beyond local scope.
 
 ### Part 6b: Lower Bound Estimation
 
 - **What information is available at the current state:** The current location, the relics collected, and the amount of fuel used.
-- **What the lower bound accounts for:** Accounts for the current fuel used plus the optimal fuel used for all potential paths from the current location.
-- **Why it never overestimates:** Since it's assuming the most optimal fuel cost for all potential paths, the actual cost is greater than or equal to this potential cost. 
+- **What the lower bound accounts for:** Accounts for the current fuel used plus the optimal fuel assumed for all potential paths from the current location.
+- **Why it never overestimates:** Since it's assuming the most optimal fuel cost for all potential paths, the actual cost can only be greater than or equal to this potential cost. 
 
 ### Part 6c: Pruning Correctness
 
