@@ -60,7 +60,6 @@ def select_sources(spawn, relics, exit_node):
     nodesList = [spawn] + relics + [exit_node]
     return list(set(nodesList))
 
-
 def run_dijkstra(graph, source):
     """
     Parameters
@@ -87,10 +86,12 @@ def run_dijkstra(graph, source):
 
     while priorityQueue:
         [currentCost, currentNode] = heapq.heappop(priorityQueue)
+
         # If the current cost is greater than the previous cost to reach the current node, skip it
         if currentCost > nodeCosts[currentNode]:
             continue
         for neighbor, edgeCost in graph[currentNode]:
+
             # If the cost to reach the neighbor + the edge cost is less than the previous cost, we update the cost to reach the neighbor
             if nodeCosts[currentNode] + edgeCost < nodeCosts[neighbor]:
                 nodeCosts[neighbor] = nodeCosts[currentNode] + edgeCost
@@ -98,7 +99,6 @@ def run_dijkstra(graph, source):
 
     # Returning the dictionary of minimum costs from the source to every node in the graph
     return nodeCosts
-
 
 def precompute_distances(graph, spawn, relics, exit_node):
     """
@@ -171,8 +171,8 @@ def explain_search():
     "'T': [] "
     greedyPick = "Greedy will pick (S, B) + (B, D) + (D, C) + (C, B) + (B, T) with a total cost of 6." 
     optimalPick = "Optimal will pick (S, B) + (B, D) + (D, C) + (C, T) with total cost of 5." 
-    greedyLoss = "Greedy loses because it greedily chooses the shortest path from the current node without considering future choices."
-    algoExplore = "The algorithm must explore the order in which the shortest path from the starting node to the ending node while reaching all relic nodes at least once exists."
+    greedyLoss = "Greedy loses because it chose the local best path (C, B) without considering that it would cost more to reach the end for path (B, T)."
+    algoExplore = "The algorithm must explore all orders in which a path from the starting node to the ending node while reaching all relic nodes at least once exists."
     return failureMode + counterExample + greedyPick + optimalPick + greedyLoss + algoExplore
 
 
@@ -203,10 +203,14 @@ def find_optimal_route(dist_table, spawn, relics, exit_node):
     currentLoc = spawn
     relicsUncollected = list(relics)
     relicsCollected = []
-    # A list holding the minimum cost for the torchbearer to reach the exit and the path to get there
+
+    # A list holding the minimum cost for the torchbearer to reach the exit and the order of visited relics to get there
     bestCost = [float('inf'), []]
+
+    # Recursively explore all possible valid paths from the start to the exit node 
     _explore(dist_table, currentLoc, relicsUncollected, relicsCollected, fuelCost, exit_node, bestCost)
 
+    # Returns the overall best fuel cost and the order of visited relics to achieve it
     return (bestCost[0], bestCost[1])
 
 def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
@@ -238,32 +242,41 @@ def _explore(dist_table, current_loc, relics_remaining, relics_visited_order,
     This comment is graded.
     """
     # Base Case:
+    # If there are no more relics to visit 
     if len(relics_remaining) == 0:
+
+        # Calculate total cost to reach the exit node from the current location
         totalCost = cost_so_far + dist_table[current_loc][exit_node]
+
+        # Update best cost if total cost is less than current best
         if totalCost < best[0]:
             best[0] = totalCost
             best[1] = relics_visited_order.copy()
         return
-    
-    # Picking the cheapest cost to reach relic from the current location
+
+    # Picking the cheapest cost to reach any relic from the current location
     cheapestRelicCost = min(dist_table[current_loc][relic] for relic in relics_remaining)
 
-    # Picking the cheapest cost to reach the exit node from all remaining relics
+    # Picking the cheapest cost to reach the exit node from any remaining relics
     cheapestExitCost = min(dist_table[relic][exit_node] for relic in relics_remaining)
+
+    # Estimates the lowest potential cost to reach the exit node from the current location while visiting all remaining relics
     optimalCost = cheapestRelicCost + cheapestExitCost
 
-    # As we've calculated the potential cheapest cost to reach the exit node for all remaining relics, if we add the cost so far to this potential cheapest cost and it's still larger than our current best, we can prune this path.
-    # This is because the optimal cost for this current path has taken into account all future possibilites, so there's no way for the optimal cost for this current path to be less due to nonnegative edge weights.
+    # If the actual cost so far plus this lowest assumed possible cost is more than the current best cost, the path can be pruned since the actual cost would be greater than or equal to this possible cost.
     if cost_so_far + optimalCost >= best[0]:
         return
     
     # Recursive Case:
     for relic in list(relics_remaining):
+
+        # Calculating the current fuel to cost to reach the next relic from the current location
         currentFuelCost = cost_so_far + dist_table[current_loc][relic]
 
         relics_remaining.remove(relic)
         relics_visited_order.append(relic)
 
+        # Recursively explore starting with the reached relic as the new current location along with the currently calculated fuel cost
         _explore(dist_table, relic, relics_remaining, relics_visited_order, currentFuelCost, exit_node, best)
 
         # Backtracking:
@@ -288,10 +301,11 @@ def solve(graph, spawn, relics, exit_node):
     tuple[float, list[node]]
         (minimum_fuel_cost, ordered_relic_list)
         Returns (float('inf'), []) if no valid route exists.
-
-    TODO
     """
+    # Computing the minimum distances from each node to every other node in the graph
     distTable = precompute_distances(graph, spawn, relics, exit_node)
+    
+    # Finding the best valid route with optimal fuel costs using these minimum distances
     return find_optimal_route(distTable, spawn, relics, exit_node)
 
 # =============================================================================

@@ -42,7 +42,7 @@ I've implemented the find_optimal_route along with the _explore recursive helper
 
 ---
 
-## Final Entry – [Date]: Time Estimate
+## Final Entry – [5/14/2026]: Time Estimate
 
 > Required. Estimate minutes spent per part. Honesty is expected; accuracy is not graded.
 
@@ -54,6 +54,6 @@ I've implemented the find_optimal_route along with the _explore recursive helper
 | Part 4: Search Design | 30 minutes |
 | Part 5: State and Search Space | 2 hours |
 | Part 6: Pruning | 4 hours |
-| Part 7: Implementation | |
-| README and DEVLOG writing | 2 hours |
-| **Total** | |
+| Part 7: Implementation | 4 hours |
+| README and DEVLOG writing | 4 hours |
+| **Total** | 15.75 hours |
